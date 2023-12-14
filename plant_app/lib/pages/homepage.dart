@@ -10,6 +10,23 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(child: Text("Hello World")),
+          Padding(
+            padding: EdgeInsets.all(18.0),
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter your username',
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
