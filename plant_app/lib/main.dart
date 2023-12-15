@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/homepage.dart';
+import 'package:plant_app/pages/login_page.dart';
 import 'package:plant_app/repository/plant_repository.dart';
 
 void main() async {
@@ -29,7 +31,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Plant App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: LoginPage(),
+      ),
+    );
+
+    /*MaterialApp(
       title: 'Plant App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -41,6 +60,6 @@ class MyApp extends StatelessWidget {
         create: (context) => PlantCubit(PlantRepository()),
         child: const Homepage(),
       ),
-    );
+    );*/
   }
 }
