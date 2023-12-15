@@ -32,86 +32,87 @@ class _HomepageState extends State<Homepage> {
     super.initState();
   }
 
+  void signOut() {
+    context.read<AuthBloc>().add(AuthSignOutEvent());
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BlocProvider(
+                create: (context) => PasswordVisibilityBloc(),
+                child: const LoginPage(),
+              )),
+    );
+  }
+
+  void addPlant() async {
+    final image = await _getImage();
+    // ignore: use_build_context_synchronously
+    context
+        .read<PlantBloc>()
+        .add(AddPlantEvent(_nameController.text, _colorController.text, image));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Plant App"),
         actions: [
-          IconButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(AuthSignOutEvent());
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                            create: (context) => PasswordVisibilityBloc(),
-                            child: const LoginPage(),
-                          )),
-                );
-              },
-              icon: const Icon(Icons.login)),
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.app_registration)),
+          IconButton(onPressed: signOut, icon: const Icon(Icons.login)),
         ],
       ),
       body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
         if (state is PlantAddedState) {
-          return Center(child: Text("Plant added"));
+          return const Center(child: Text("Plant added"));
         } else if (state is PlantErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Hata: ${state.errorMessage}'),
-            ),
-          );
+          state.showErrorMessage(context);
         } else if (state is PlantListState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (state is PlantLoadingState)
-                    const Center(child: CircularProgressIndicator())
-                  else
-                    const Center(child: Text("add plant")),
-                  textField(controller: _nameController, labelText: "name"),
-                  textField(controller: _colorController, labelText: "color"),
-                  ElevatedButton(
-                      onPressed: () async {
-                        final image = await _getImage();
-                        // ignore: use_build_context_synchronously
-                        context.read<PlantBloc>().add(AddPlantEvent(
-                            _nameController.text,
-                            _colorController.text,
-                            image));
-                      },
-                      child: Text("add plant image")),
-                  SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                      itemCount: state.plants.length,
-                      itemBuilder: (context, index) {
-                        final plant = state.plants[index];
-                        return ListTile(
-                          title: Text(plant.name),
-                          subtitle: Text(plant.color),
-                          leading: CircleAvatar(
-                              child: Image.network(plant.imageURL)),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
+          return pageView(state);
         } else if (state is PlantErrorState) {
-          return const Center(child: Text("error"));
+          return Center(child: Text(state.errorMessage));
         }
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }),
+    );
+  }
+
+  Padding pageView(PlantListState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (state is PlantLoadingState)
+              const Center(child: CircularProgressIndicator())
+            else
+              const Center(child: Text("add plant")),
+            textField(controller: _nameController, labelText: "name"),
+            textField(controller: _colorController, labelText: "color"),
+            ElevatedButton(
+                onPressed: addPlant, child: const Text("add plant image")),
+            plantListView(state)
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox plantListView(PlantListState state) {
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        itemCount: state.plants.length,
+        itemBuilder: (context, index) {
+          final plant = state.plants[index];
+          return ListTile(
+            title: Text(plant.name),
+            subtitle: Text(plant.color),
+            leading: CircleAvatar(child: Image.network(plant.imageURL)),
+          );
+        },
+      ),
     );
   }
 
@@ -122,7 +123,7 @@ class _HomepageState extends State<Homepage> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: labelText,
         ),
       ),

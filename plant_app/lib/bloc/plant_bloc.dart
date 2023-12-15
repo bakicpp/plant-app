@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/repository/plant_repository.dart';
@@ -21,6 +22,12 @@ class PlantErrorState extends PlantState {
   final String errorMessage;
 
   PlantErrorState(this.errorMessage);
+
+  void showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $errorMessage')),
+    );
+  }
 }
 
 abstract class PlantEvent {}
