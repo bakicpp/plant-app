@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
-import 'package:plant_app/firebase_services/database_service.dart';
 import 'package:plant_app/pages/login_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -115,13 +114,6 @@ class _HomepageState extends State<Homepage> {
       }),
     );
   }
-
-  ElevatedButton button() => ElevatedButton(
-      onPressed: () {
-        FirebaseCollection("users").addDocument({"name": "John Doe"});
-        print("added data");
-      },
-      child: const Text("add data"));
 
   Padding textField(
       {required TextEditingController controller, required String labelText}) {
