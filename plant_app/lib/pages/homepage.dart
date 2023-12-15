@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
+import 'package:plant_app/bloc/theme_bloc.dart';
 import 'package:plant_app/pages/login_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -52,6 +53,10 @@ class _HomepageState extends State<Homepage> {
         .add(AddPlantEvent(_nameController.text, _colorController.text, image));
   }
 
+  void changeTheme() {
+    context.read<ThemeBloc>().add(ToggleThemeEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +64,8 @@ class _HomepageState extends State<Homepage> {
         title: const Text("Plant App"),
         actions: [
           IconButton(onPressed: signOut, icon: const Icon(Icons.login)),
+          IconButton(
+              onPressed: changeTheme, icon: const Icon(Icons.brightness_4))
         ],
       ),
       body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {

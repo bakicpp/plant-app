@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
+import 'package:plant_app/bloc/theme_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/pages/login_page.dart';
@@ -17,6 +18,8 @@ void main() async {
 
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(PlantAdapter());
+  await Hive.openBox<bool>('theme_box');
+
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyAwVvjCHo33NzlHxycsLJ_uhmxpYizAA18",
@@ -43,40 +46,42 @@ class MyApp extends StatelessWidget {
         BlocProvider<PlantBloc>(
           create: (context) => PlantBloc(PlantRepository()),
         ),
+        BlocProvider<ThemeBloc>(create: (context) => ThemeBloc()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Plant App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: Builder(
-          builder: (context) {
-            final authBloc = BlocProvider.of<AuthBloc>(context);
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Plant App',
+            theme: state.themeData,
+            home: Builder(
+              builder: (context) {
+                final authBloc = BlocProvider.of<AuthBloc>(context);
 
-            return FutureBuilder<bool?>(
-              future: authBloc.isUserSignedIn(),
-              builder: (context, AsyncSnapshot<bool?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else {
-                  final isUserSignedIn = snapshot.data ?? false;
+                return FutureBuilder<bool?>(
+                  future: authBloc.isUserSignedIn(),
+                  builder: (context, AsyncSnapshot<bool?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Scaffold(
+                        body: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      final isUserSignedIn = snapshot.data ?? false;
 
-                  if (isUserSignedIn) {
-                    return const Homepage();
-                  } else {
-                    return const LoginPage();
-                  }
-                }
+                      if (isUserSignedIn) {
+                        return const Homepage();
+                      } else {
+                        return const LoginPage();
+                      }
+                    }
+                  },
+                );
               },
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
 
