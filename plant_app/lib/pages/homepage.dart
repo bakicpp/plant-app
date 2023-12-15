@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/firebase_services/database_service.dart';
 
@@ -77,6 +78,8 @@ class _HomepageState extends State<Homepage> {
                         return ListTile(
                           title: Text(plant.name),
                           subtitle: Text(plant.color),
+                          leading: CircleAvatar(
+                              child: Image.network(plant.imageURL)),
                         );
                       },
                     ),

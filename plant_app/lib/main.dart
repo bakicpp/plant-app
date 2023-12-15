@@ -1,13 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
+import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/homepage.dart';
-import 'package:plant_app/pages/register_page.dart';
 import 'package:plant_app/repository/plant_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter(PlantAdapter());
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyAwVvjCHo33NzlHxycsLJ_uhmxpYizAA18",
@@ -33,7 +39,7 @@ class MyApp extends StatelessWidget {
       home: BlocProvider(
         key: UniqueKey(),
         create: (context) => PlantCubit(PlantRepository()),
-        child: Homepage(),
+        child: const Homepage(),
       ),
     );
   }
