@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/firebase_services/database_service.dart';
 import 'package:plant_app/pages/login_page.dart';
@@ -16,8 +17,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _colorController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _colorController = TextEditingController();
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<File> _getImage() async {
@@ -28,7 +29,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     context.read<PlantBloc>().add(GetPlantsEvent());
     super.initState();
   }
@@ -45,8 +45,10 @@ class _HomepageState extends State<Homepage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const LoginPage()), // LoginScreen yerine uygun olan sayfanın adını kullanın
+                      builder: (context) => BlocProvider(
+                            create: (context) => PasswordVisibilityBloc(),
+                            child: const LoginPage(),
+                          )),
                 );
               },
               icon: const Icon(Icons.login)),

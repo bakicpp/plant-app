@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocProvider(
           create: (context) => PasswordVisibilityBloc(),
-          child: const RegisterPage(),
+          child: const LoginPage(),
         ),
       ),
     );

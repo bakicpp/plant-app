@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
-import 'package:plant_app/bloc/plant_bloc.dart';
-import 'package:plant_app/pages/homepage.dart';
-import 'package:plant_app/repository/plant_repository.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,8 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

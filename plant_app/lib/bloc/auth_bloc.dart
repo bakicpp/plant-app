@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/pages/homepage.dart';
+import 'package:plant_app/pages/login_page.dart';
 import 'package:plant_app/repository/plant_repository.dart';
 
 @immutable

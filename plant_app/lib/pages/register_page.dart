@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
-import 'package:plant_app/bloc/plant_bloc.dart';
-import 'package:plant_app/firebase_services/auth_service.dart';
-import 'package:plant_app/pages/homepage.dart';
-import 'package:plant_app/repository/plant_repository.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -15,8 +11,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,36 +38,45 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _emailController,
                 labelText: 'Email',
               ),
-              BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityState>(
-                builder: (context, state) {
-                  return registerTextFields(
-                      controller: _passwordController,
-                      labelText: "Password",
-                      obscureText: state is PasswordHiddenState,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          context
-                              .read<PasswordVisibilityBloc>()
-                              .add(TogglePasswordVisibilityEvent());
-                        },
-                        icon: Icon(state is PasswordHiddenState
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                      ));
-                },
-              ),
+              passwordTextField(),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(AuthSignUpEvent(
-                      _emailController.text, _passwordController.text));
-                },
-                child: const Text('Register'),
-              ),
+              registerButton(context),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  ElevatedButton registerButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<AuthBloc>().add(
+            AuthSignUpEvent(_emailController.text, _passwordController.text));
+      },
+      child: const Text('Register'),
+    );
+  }
+
+  BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityState>
+      passwordTextField() {
+    return BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityState>(
+      builder: (context, state) {
+        return registerTextFields(
+            controller: _passwordController,
+            labelText: "Password",
+            obscureText: state is PasswordHiddenState,
+            suffixIcon: IconButton(
+              onPressed: () {
+                context
+                    .read<PasswordVisibilityBloc>()
+                    .add(TogglePasswordVisibilityEvent());
+              },
+              icon: Icon(state is PasswordHiddenState
+                  ? Icons.visibility_off
+                  : Icons.visibility),
+            ));
+      },
     );
   }
 
