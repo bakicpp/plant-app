@@ -68,6 +68,11 @@ class AuthSignOutEvent extends AuthEvent {}
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<bool> isUserSignedIn() async {
+    final user = FirebaseAuth.instance.currentUser;
+    return user != null;
+  }
+
   AuthBloc() : super(AuthInitialState()) {
     on((event, emit) async {
       if (event is AuthSignInEvent) {

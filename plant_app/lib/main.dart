@@ -5,9 +5,11 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
+import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/models/plant.dart';
+import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/pages/login_page.dart';
-import 'package:plant_app/pages/register_page.dart';
+import 'package:plant_app/repository/plant_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(),
         ),
+        BlocProvider<PasswordVisibilityBloc>(
+          create: (context) => PasswordVisibilityBloc(),
+        ),
+        BlocProvider<PlantBloc>(
+          create: (context) => PlantBloc(PlantRepository()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -43,9 +51,31 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BlocProvider(
-          create: (context) => PasswordVisibilityBloc(),
-          child: const LoginPage(),
+        home: Builder(
+          builder: (context) {
+            final authBloc = BlocProvider.of<AuthBloc>(context);
+
+            return FutureBuilder<bool?>(
+              future: authBloc.isUserSignedIn(),
+              builder: (context, AsyncSnapshot<bool?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else {
+                  final isUserSignedIn = snapshot.data ?? false;
+
+                  if (isUserSignedIn) {
+                    return const Homepage();
+                  } else {
+                    return const LoginPage();
+                  }
+                }
+              },
+            );
+          },
         ),
       ),
     );
