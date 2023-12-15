@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/firebase_services/database_service.dart';
+import 'package:plant_app/pages/login_page.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -38,7 +39,17 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         title: const Text("Plant App"),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.login)),
+          IconButton(
+              onPressed: () {
+                context.read<AuthBloc>().add(AuthSignOutEvent());
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const LoginPage()), // LoginScreen yerine uygun olan sayfanın adını kullanın
+                );
+              },
+              icon: const Icon(Icons.login)),
           IconButton(
               onPressed: () {}, icon: const Icon(Icons.app_registration)),
         ],
@@ -69,6 +80,7 @@ class _HomepageState extends State<Homepage> {
                   ElevatedButton(
                       onPressed: () async {
                         final image = await _getImage();
+                        // ignore: use_build_context_synchronously
                         context.read<PlantBloc>().add(AddPlantEvent(
                             _nameController.text,
                             _colorController.text,
@@ -97,7 +109,7 @@ class _HomepageState extends State<Homepage> {
         } else if (state is PlantErrorState) {
           return const Center(child: Text("error"));
         }
-        return Center(child: Text(state.toString()));
+        return Center(child: CircularProgressIndicator());
       }),
     );
   }

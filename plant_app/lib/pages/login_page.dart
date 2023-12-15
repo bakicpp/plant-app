@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
-import 'package:plant_app/firebase_services/auth_service.dart';
-import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/repository/plant_repository.dart';
 
