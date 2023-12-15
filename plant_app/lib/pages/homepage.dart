@@ -26,6 +26,13 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    context.read<PlantBloc>().add(GetPlantsEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,9 +43,9 @@ class _HomepageState extends State<Homepage> {
               onPressed: () {}, icon: const Icon(Icons.app_registration)),
         ],
       ),
-      body: BlocBuilder<PlantCubit, PlantState>(builder: (context, state) {
+      body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
         if (state is PlantAddedState) {
-          return const Center(child: Text("Plant added"));
+          return Center(child: Text("Plant added"));
         } else if (state is PlantErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -62,11 +69,10 @@ class _HomepageState extends State<Homepage> {
                   ElevatedButton(
                       onPressed: () async {
                         final image = await _getImage();
-                        context.read<PlantCubit>().addPlant(
-                              _nameController.text,
-                              _colorController.text,
-                              image,
-                            );
+                        context.read<PlantBloc>().add(AddPlantEvent(
+                            _nameController.text,
+                            _colorController.text,
+                            image));
                       },
                       child: Text("add plant image")),
                   SizedBox(
@@ -88,8 +94,10 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           );
+        } else if (state is PlantErrorState) {
+          return const Center(child: Text("error"));
         }
-        return const Center(child: Text("loading"));
+        return Center(child: Text(state.toString()));
       }),
     );
   }

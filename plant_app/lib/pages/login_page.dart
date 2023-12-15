@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
               context,
               MaterialPageRoute(
                   builder: (context) => BlocProvider(
-                        create: (context) => PlantCubit(PlantRepository()),
+                        create: (context) => PlantBloc(PlantRepository()),
                         child: const Homepage(),
                       )),
             );
