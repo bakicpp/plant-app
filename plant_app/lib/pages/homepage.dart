@@ -27,41 +27,66 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Plant App"),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.login)),
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.app_registration)),
+        ],
+      ),
       body: BlocBuilder<PlantCubit, PlantState>(builder: (context, state) {
         if (state is PlantAddedState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Bitki başarıyla eklendi!'),
-            ),
-          );
-        } else if (state is PlantHataState) {
+          return const Center(child: Text("Plant added"));
+        } else if (state is PlantErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Hata: ${state.errorMessage}'),
             ),
           );
+        } else if (state is PlantListState) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (state is PlantLoadingState)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    const Center(child: Text("add plant")),
+                  textField(controller: _nameController, labelText: "name"),
+                  textField(controller: _colorController, labelText: "color"),
+                  ElevatedButton(
+                      onPressed: () async {
+                        final image = await _getImage();
+                        context.read<PlantCubit>().addPlant(
+                              _nameController.text,
+                              _colorController.text,
+                              image,
+                            );
+                      },
+                      child: Text("add plant image")),
+                  SizedBox(
+                    height: 300,
+                    child: ListView.builder(
+                      itemCount: state.plants.length,
+                      itemBuilder: (context, index) {
+                        final plant = state.plants[index];
+                        return ListTile(
+                          title: Text(plant.name),
+                          subtitle: Text(plant.color),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
         }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Center(child: Text("add plant")),
-            textField(controller: _nameController, labelText: "name"),
-            textField(controller: _colorController, labelText: "color"),
-            button(),
-            ElevatedButton(
-                onPressed: () async {
-                  final image = await _getImage();
-                  context.read<PlantCubit>().addPlant(
-                        _nameController.text,
-                        _colorController.text,
-                        image,
-                      );
-                },
-                child: Text("add plant image")),
-          ],
-        );
+        return const Center(child: Text("loading"));
       }),
     );
   }
