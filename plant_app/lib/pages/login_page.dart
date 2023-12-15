@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/repository/plant_repository.dart';
@@ -16,6 +17,23 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  void authedState() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BlocProvider(
+                create: (context) => PlantBloc(PlantRepository()),
+                child: const Homepage(),
+              )),
+    );
+  }
+
+  void authErrorState(AuthErrorState state) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: ${state.errorMessage}')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +43,9 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticatedState) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                        create: (context) => PlantBloc(PlantRepository()),
-                        child: const Homepage(),
-                      )),
-            );
+            authedState();
           } else if (state is AuthErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: ${state.errorMessage}')),
-            );
+            authErrorState(state);
           }
         },
         child: Padding(
@@ -44,31 +53,60 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-              ),
+              loginTextFields(controller: _emailController, labelText: 'Email'),
               const SizedBox(height: 16.0),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                obscureText: true,
-              ),
+              passwordTextField(),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(AuthSignInEvent(
-                      _emailController.text, _passwordController.text));
-                },
-                child: const Text('Login'),
-              ),
+              loginButton(context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityState>
+      passwordTextField() {
+    return BlocBuilder<PasswordVisibilityBloc, PasswordVisibilityState>(
+      builder: (context, state) {
+        return loginTextFields(
+            controller: _passwordController,
+            labelText: 'Password',
+            obscureText: state is PasswordHiddenState,
+            suffixIcon: IconButton(
+              icon: Icon(state is PasswordHiddenState
+                  ? Icons.visibility
+                  : Icons.visibility_off),
+              onPressed: () => context
+                  .read<PasswordVisibilityBloc>()
+                  .add(TogglePasswordVisibilityEvent()),
+            ));
+      },
+    );
+  }
+
+  ElevatedButton loginButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<AuthBloc>().add(
+            AuthSignInEvent(_emailController.text, _passwordController.text));
+      },
+      child: const Text('Login'),
+    );
+  }
+
+  TextField loginTextFields({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+    suffixIcon,
+  }) {
+    return TextField(
+      obscureText: obscureText,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        suffixIcon: suffixIcon,
       ),
     );
   }

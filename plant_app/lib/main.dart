@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
 
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const LoginPage(),
+        home: BlocProvider(
+          create: (context) => PasswordVisibilityBloc(),
+          child: LoginPage(),
+        ),
       ),
     );
 
