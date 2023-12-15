@@ -2,7 +2,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:plant_app/bloc/plant_bloc.dart';
+import 'package:plant_app/pages/homepage.dart';
+import 'package:plant_app/repository/plant_repository.dart';
 
 @immutable
 abstract class AuthState {}
@@ -13,6 +17,17 @@ class AuthAuthenticatedState extends AuthState {
   final User user;
 
   AuthAuthenticatedState(this.user);
+
+  void authSuccess(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BlocProvider(
+                create: (context) => PlantBloc(PlantRepository()),
+                child: const Homepage(),
+              )),
+    );
+  }
 }
 
 class AuthUnauthenticatedState extends AuthState {}
@@ -21,6 +36,12 @@ class AuthErrorState extends AuthState {
   final String errorMessage;
 
   AuthErrorState(this.errorMessage);
+
+  void showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $errorMessage')),
+    );
+  }
 }
 
 @immutable
@@ -31,6 +52,13 @@ class AuthSignInEvent extends AuthEvent {
   final String password;
 
   AuthSignInEvent(this.email, this.password);
+}
+
+class AuthSignUpEvent extends AuthEvent {
+  final String email;
+  final String password;
+
+  AuthSignUpEvent(this.email, this.password);
 }
 
 class AuthSignOutEvent extends AuthEvent {}
@@ -57,6 +85,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthUnauthenticatedState());
         } catch (e) {
           emit(AuthErrorState("Sign out failed: $e"));
+        }
+      } else if (event is AuthSignUpEvent) {
+        try {
+          UserCredential userCredential =
+              await _auth.createUserWithEmailAndPassword(
+            email: event.email,
+            password: event.password,
+          );
+          emit(AuthAuthenticatedState(userCredential.user!));
+        } catch (e) {
+          emit(AuthErrorState("Sign up failed: $e"));
         }
       }
     });

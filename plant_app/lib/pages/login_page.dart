@@ -17,23 +17,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  void authedState() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => BlocProvider(
-                create: (context) => PlantBloc(PlantRepository()),
-                child: const Homepage(),
-              )),
-    );
-  }
-
-  void authErrorState(AuthErrorState state) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: ${state.errorMessage}')),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +26,9 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticatedState) {
-            authedState();
+            state.authSuccess(context);
           } else if (state is AuthErrorState) {
-            authErrorState(state);
+            state.showErrorMessage(context);
           }
         },
         child: Padding(

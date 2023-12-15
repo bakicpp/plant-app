@@ -21,16 +21,4 @@ class PasswordVisibilityBloc
       }
     });
   }
-
-  @override
-  Stream<PasswordVisibilityState> mapEventToState(
-      PasswordVisibilityEvent event) async* {
-    if (event is TogglePasswordVisibilityEvent) {
-      if (state is PasswordHiddenState) {
-        yield PasswordVisibleState();
-      } else {
-        yield PasswordHiddenState();
-      }
-    }
-  }
 }

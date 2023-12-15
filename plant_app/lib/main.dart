@@ -7,6 +7,7 @@ import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
+import 'package:plant_app/pages/register_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocProvider(
           create: (context) => PasswordVisibilityBloc(),
-          child: LoginPage(),
+          child: const RegisterPage(),
         ),
       ),
     );
