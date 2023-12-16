@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class AddPlantBottomSheet extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController colorController = TextEditingController();
@@ -46,36 +47,7 @@ class AddPlantBottomSheet extends StatelessWidget {
               SizedBox(height: 16.0),
               textField(controller: colorController, labelText: "Ex: Red"),
               SizedBox(height: 16.0),
-              InkWell(
-                onTap: () {
-                  selectImage();
-                },
-                child: Container(
-                  width: pageWidth,
-                  height: pageWidth / 5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Color.fromRGBO(198, 215, 198, 1),
-                    border: Border.all(
-                      color: Colors.green,
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.camera_alt_outlined, color: Colors.green),
-                      Text(
-                        "Select image from files",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: Colors.green,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              selectImageSection(context),
               SizedBox(height: 16.0),
               SizedBox(
                 width: pageWidth,
@@ -104,6 +76,39 @@ class AddPlantBottomSheet extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  InkWell selectImageSection(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        selectImage();
+      },
+      child: Container(
+        width: pageWidth,
+        height: pageWidth / 5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Color.fromRGBO(198, 215, 198, 1),
+          border: Border.all(
+            color: Colors.green,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.camera_alt_outlined, color: Colors.green),
+            Text(
+              "Select image from files",
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.green,
+                  ),
+            ),
+          ],
         ),
       ),
     );

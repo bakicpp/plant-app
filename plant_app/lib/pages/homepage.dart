@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,11 +59,10 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _image = image;
     });
-    if (_image != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Image selected')),
-      );
-    }
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Image selected')),
+    );
   }
 
   void addPlant() async {

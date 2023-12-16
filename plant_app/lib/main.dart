@@ -18,7 +18,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
-
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(PlantAdapter());
   await Hive.openBox<bool>('theme_box');
@@ -56,71 +55,64 @@ class MyApp extends StatelessWidget {
           },
         ),
       ],
-      child: BlocBuilder<LanguageBloc, LanguageState>(
-        builder: (context, languageState) {
-          return BlocBuilder<ThemeBloc, ThemeState>(
-            builder: (context, themeState) {
-              return MaterialApp(
-                locale: languageState.selectedLanguage.value,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('tr'),
-                ],
-                debugShowCheckedModeBanner: false,
-                title: 'Plant App',
-                theme: themeState.themeData,
-                home: Builder(
-                  builder: (context) {
-                    final authBloc = BlocProvider.of<AuthBloc>(context);
+      child: materialApp(),
+    );
+  }
 
-                    return FutureBuilder<bool?>(
-                      future: authBloc.isUserSignedIn(),
-                      builder: (context, AsyncSnapshot<bool?> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Scaffold(
-                            body: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        } else {
-                          final isUserSignedIn = snapshot.data ?? false;
+  BlocBuilder<LanguageBloc, LanguageState> materialApp() {
+    return BlocBuilder<LanguageBloc, LanguageState>(
+      builder: (context, languageState) {
+        return BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, themeState) {
+            return MaterialApp(
+              locale: languageState.selectedLanguage.value,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'),
+                Locale('tr'),
+              ],
+              debugShowCheckedModeBanner: false,
+              title: 'Plant App',
+              theme: themeState.themeData,
+              home: _buildMainPage(),
+            );
+          },
+        );
+      },
+    );
+  }
 
-                          if (isUserSignedIn) {
-                            return const Homepage();
-                          } else {
-                            return const LoginPage();
-                          }
-                        }
-                      },
-                    );
-                  },
+  Builder _buildMainPage() {
+    return Builder(
+      builder: (context) {
+        final authBloc = BlocProvider.of<AuthBloc>(context);
+
+        return FutureBuilder<bool?>(
+          future: authBloc.isUserSignedIn(),
+          builder: (context, AsyncSnapshot<bool?> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
                 ),
               );
-            },
-          );
-        },
-      ),
-    );
+            } else {
+              final isUserSignedIn = snapshot.data ?? false;
 
-    /*MaterialApp(
-      title: 'Plant App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: BlocProvider(
-        key: UniqueKey(),
-        create: (context) => PlantCubit(PlantRepository()),
-        child: const Homepage(),
-      ),
-    );*/
+              if (isUserSignedIn) {
+                return const Homepage();
+              } else {
+                return const LoginPage();
+              }
+            }
+          },
+        );
+      },
+    );
   }
 }
