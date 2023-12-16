@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/repository/plant_repository.dart';
@@ -83,25 +82,5 @@ class PlantBloc extends Bloc<PlantEvent, PlantState> {
         }
       }
     });
-
-    /*on<AddPlantEvent>((event, emit) async {
-      emit(PlantLoadingState());
-      try {
-        await _repository.addPlant(event.name, event.color, event.image);
-        emit(PlantAddedState());
-        add(GetPlantsEvent()); // Bitki eklendikten sonra listeyi tekrar al
-      } catch (e) {
-        emit(PlantErrorState("Bitki eklenirken bir hata oluştu."));
-      }
-    });
-
-    on<GetPlantsEvent>((event, emit) async {
-      try {
-        final plants = await _repository.getPlants();
-        emit(PlantListState(plants));
-      } catch (e) {
-        emit(PlantErrorState("Bitkiler alınırken bir hata oluştu."));
-      }
-    });*/
   }
 }

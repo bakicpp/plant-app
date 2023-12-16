@@ -20,19 +20,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(150.0),
+          preferredSize: Size.fromHeight(200.0),
           child: AppBar(
               flexibleSpace: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(100),
-                bottomRight: Radius.circular(100),
+                bottomLeft: Radius.circular(200),
+                bottomRight: Radius.circular(200),
               ),
-              gradient: LinearGradient(
-                colors: [Colors.blue, Colors.green],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/login_image.jpg"),
+                  fit: BoxFit.cover),
             ),
           ))),
       body: BlocListener<AuthBloc, AuthState>(

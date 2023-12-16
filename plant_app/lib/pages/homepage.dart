@@ -217,6 +217,9 @@ class _HomepageState extends State<Homepage> {
       body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
         if (state is PlantAddedState) {
           return const PlantAddedScreen();
+        }
+        if (state is PlantLoadingState) {
+          return const Center(child: CircularProgressIndicator());
         } else if (state is PlantErrorState) {
           return Center(child: Text(state.errorMessage));
         } else if (state is PlantListState) {
