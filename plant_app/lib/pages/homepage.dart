@@ -214,23 +214,28 @@ class _HomepageState extends State<Homepage> {
               onPressed: changeTheme, icon: const Icon(Icons.brightness_4))
         ],
       ),
-      body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
-        if (state is PlantAddedState) {
-          return const PlantAddedScreen();
-        }
-        if (state is PlantLoadingState) {
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<PlantBloc>().add(GetPlantsEvent());
+        },
+        child: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
+          if (state is PlantAddedState) {
+            return const PlantAddedScreen();
+          }
+          if (state is PlantLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is PlantErrorState) {
+            return Center(child: Text(state.errorMessage));
+          } else if (state is PlantListState) {
+            return pageView(state, pageWidth, pageHeight);
+          } else if (state is PlantDeletedState) {
+            return const Center(child: Text("Plant deleted"));
+          } else if (state is PlantErrorState) {
+            return Center(child: Text(state.errorMessage));
+          }
           return const Center(child: CircularProgressIndicator());
-        } else if (state is PlantErrorState) {
-          return Center(child: Text(state.errorMessage));
-        } else if (state is PlantListState) {
-          return pageView(state, pageWidth, pageHeight);
-        } else if (state is PlantDeletedState) {
-          return const Center(child: Text("Plant deleted"));
-        } else if (state is PlantErrorState) {
-          return Center(child: Text(state.errorMessage));
-        }
-        return const Center(child: CircularProgressIndicator());
-      }),
+        }),
+      ),
     );
   }
 
