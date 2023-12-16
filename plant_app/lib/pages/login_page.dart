@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                 state is PasswordHiddenState
                     ? Icons.visibility
                     : Icons.visibility_off,
-                color: Colors.green,
+                color: Colors.grey,
               ),
               onPressed: () => context
                   .read<PasswordVisibilityBloc>()
