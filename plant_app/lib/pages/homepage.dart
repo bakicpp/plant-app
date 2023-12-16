@@ -383,7 +383,6 @@ class _HomepageState extends State<Homepage> {
           PopupMenuItem(
             onTap: () {
               context.read<PlantBloc>().add(DeletePlantEvent(plant));
-              Navigator.pop(context);
             },
             child: const Row(
               children: [
