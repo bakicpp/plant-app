@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/language_bloc/language_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/bloc/theme_bloc.dart';
@@ -11,6 +13,7 @@ import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/pages/login_page.dart';
 import 'package:plant_app/repository/plant_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,13 +50,29 @@ class MyApp extends StatelessWidget {
           create: (context) => PlantBloc(PlantRepository()),
         ),
         BlocProvider<ThemeBloc>(create: (context) => ThemeBloc()),
+        BlocProvider<LanguageBloc>(
+          create: (context) {
+            return LanguageBloc();
+          },
+        ),
       ],
-      child: BlocBuilder<ThemeBloc, ThemeState>(
+      child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
           return MaterialApp(
+            locale: state.selectedLanguage.value,
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('en'),
+              Locale('tr'),
+            ],
             debugShowCheckedModeBanner: false,
             title: 'Plant App',
-            theme: state.themeData,
+            //theme: state.themeData,
             home: Builder(
               builder: (context) {
                 final authBloc = BlocProvider.of<AuthBloc>(context);

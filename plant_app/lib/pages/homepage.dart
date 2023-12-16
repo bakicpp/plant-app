@@ -6,12 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/language_bloc/language_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/bloc/theme_bloc.dart';
+import 'package:plant_app/language/model/language_model.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
 import 'package:plant_app/state_screens/plant_added_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -189,6 +192,28 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    Map isSelected = {
+      Language.turkish.text: AppLocalizations.of(context)!.localeName == 'tr',
+      Language.english.text: AppLocalizations.of(context)!.localeName == 'en',
+    };
+
+    void toggleLanguage(String lang) {
+      if (isSelected[lang]) return;
+
+      isSelected.forEach((key, value) {
+        setState(() {
+          isSelected[key] = !value;
+        });
+      });
+
+      BlocProvider.of<LanguageBloc>(context).add(
+        ChangeLanguage(
+          selectedLanguage:
+              lang == 'Turkish' ? Language.turkish : Language.english,
+        ),
+      );
+    }
+
     double pageHeight = MediaQuery.of(context).size.height;
     double pageWidth = MediaQuery.of(context).size.width;
 
@@ -207,11 +232,20 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       appBar: AppBar(
-        title: const Text("Plant App"),
+        title: BlocBuilder<LanguageBloc, LanguageState>(
+          builder: (context, state) {
+            return Text(AppLocalizations.of(context)!.hello);
+          },
+        ),
         actions: [
           IconButton(onPressed: signOut, icon: const Icon(Icons.login)),
           IconButton(
-              onPressed: changeTheme, icon: const Icon(Icons.brightness_4))
+              onPressed: changeTheme, icon: const Icon(Icons.brightness_4)),
+          IconButton(
+              onPressed: () {
+                toggleLanguage("English");
+              },
+              icon: const Icon(Icons.language)),
         ],
       ),
       body: RefreshIndicator(
