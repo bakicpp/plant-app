@@ -57,48 +57,53 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
-        builder: (context, state) {
-          return MaterialApp(
-            locale: state.selectedLanguage.value,
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              Locale('en'),
-              Locale('tr'),
-            ],
-            debugShowCheckedModeBanner: false,
-            title: 'Plant App',
-            //theme: state.themeData,
-            home: Builder(
-              builder: (context) {
-                final authBloc = BlocProvider.of<AuthBloc>(context);
+        builder: (context, languageState) {
+          return BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, themeState) {
+              return MaterialApp(
+                locale: languageState.selectedLanguage.value,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('tr'),
+                ],
+                debugShowCheckedModeBanner: false,
+                title: 'Plant App',
+                theme: themeState.themeData,
+                home: Builder(
+                  builder: (context) {
+                    final authBloc = BlocProvider.of<AuthBloc>(context);
 
-                return FutureBuilder<bool?>(
-                  future: authBloc.isUserSignedIn(),
-                  builder: (context, AsyncSnapshot<bool?> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Scaffold(
-                        body: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    } else {
-                      final isUserSignedIn = snapshot.data ?? false;
+                    return FutureBuilder<bool?>(
+                      future: authBloc.isUserSignedIn(),
+                      builder: (context, AsyncSnapshot<bool?> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Scaffold(
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        } else {
+                          final isUserSignedIn = snapshot.data ?? false;
 
-                      if (isUserSignedIn) {
-                        return const Homepage();
-                      } else {
-                        return const LoginPage();
-                      }
-                    }
+                          if (isUserSignedIn) {
+                            return const Homepage();
+                          } else {
+                            return const LoginPage();
+                          }
+                        }
+                      },
+                    );
                   },
-                );
-              },
-            ),
+                ),
+              );
+            },
           );
         },
       ),
