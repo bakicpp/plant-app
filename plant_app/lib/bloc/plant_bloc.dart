@@ -18,16 +18,12 @@ class PlantListState extends PlantState {
   PlantListState(this.plants);
 }
 
+class PlantDeletedState extends PlantState {}
+
 class PlantErrorState extends PlantState {
   final String errorMessage;
 
   PlantErrorState(this.errorMessage);
-
-  void showErrorMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: $errorMessage')),
-    );
-  }
 }
 
 abstract class PlantEvent {}
@@ -41,6 +37,12 @@ class AddPlantEvent extends PlantEvent {
 }
 
 class GetPlantsEvent extends PlantEvent {}
+
+class DeletePlantEvent extends PlantEvent {
+  final Plant plant;
+
+  DeletePlantEvent(this.plant);
+}
 
 class PlantBloc extends Bloc<PlantEvent, PlantState> {
   final PlantRepository _repository;
@@ -70,6 +72,15 @@ class PlantBloc extends Bloc<PlantEvent, PlantState> {
         }
       } else if (event is GetPlantsEvent) {
         getPlants();
+      } else if (event is DeletePlantEvent) {
+        emit(PlantLoadingState());
+        try {
+          await _repository.deletePlant(event.plant);
+          emit(PlantDeletedState());
+          getPlants();
+        } catch (e) {
+          emit(PlantErrorState("Bitki silinirken bir hata oluştu."));
+        }
       }
     });
 

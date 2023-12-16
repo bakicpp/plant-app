@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/bloc/theme_bloc.dart';
+import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -57,6 +59,26 @@ class _HomepageState extends State<Homepage> {
     context.read<ThemeBloc>().add(ToggleThemeEvent());
   }
 
+  void showErrorMessage(String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  Future<void> clearPlantsBox() async {
+    try {
+      final box = await Hive.openBox<Plant>('plants');
+      await box.clear(); // Bu satır kutu içindeki tüm öğeleri siler
+      await box.close();
+    } catch (e) {
+      print("Hata: $e");
+      throw Exception("Plants kutusu temizlenirken bir hata oluştu.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,9 +94,11 @@ class _HomepageState extends State<Homepage> {
         if (state is PlantAddedState) {
           return const Center(child: Text("Plant added"));
         } else if (state is PlantErrorState) {
-          state.showErrorMessage(context);
+          return Center(child: Text(state.errorMessage));
         } else if (state is PlantListState) {
           return pageView(state);
+        } else if (state is PlantDeletedState) {
+          return const Center(child: Text("Plant deleted"));
         } else if (state is PlantErrorState) {
           return Center(child: Text(state.errorMessage));
         }
@@ -99,6 +123,11 @@ class _HomepageState extends State<Homepage> {
             textField(controller: _colorController, labelText: "color"),
             ElevatedButton(
                 onPressed: addPlant, child: const Text("add plant image")),
+            ElevatedButton(
+                onPressed: () async {
+                  await clearPlantsBox();
+                },
+                child: Text("clear hive")),
             plantListView(state)
           ],
         ),
@@ -116,6 +145,12 @@ class _HomepageState extends State<Homepage> {
           return ListTile(
             title: Text(plant.name),
             subtitle: Text(plant.color),
+            trailing: IconButton(
+              onPressed: () {
+                context.read<PlantBloc>().add(DeletePlantEvent(plant));
+              },
+              icon: const Icon(Icons.delete),
+            ),
             leading: CircleAvatar(child: Image.network(plant.imageURL)),
           );
         },

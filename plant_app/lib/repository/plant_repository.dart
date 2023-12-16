@@ -54,4 +54,43 @@ class PlantRepository {
       return plants;
     }
   }
+
+  Future<void> deletePlant(Plant plant) async {
+    try {
+      bool internetConnection = await InternetConnectionChecker().hasConnection;
+
+      if (internetConnection) {
+        await FirebaseFirestore.instance
+            .collection('plants')
+            .where('imageURL', isEqualTo: plant.imageURL)
+            .get()
+            .then((value) {
+          value.docs.forEach((element) {
+            element.reference.delete();
+          });
+        });
+
+        final box = await Hive.openBox<Plant>(boxName);
+        final plants = box.values.toList();
+
+        final index =
+            plants.indexWhere((element) => element.imageURL == plant.imageURL);
+
+        if (index != -1) {
+          await box.deleteAt(index);
+        } else {
+          print("Hata: Öğe bulunamadı. Box içindeki bitkiler:");
+          for (var item in plants) {
+            print(item.toString());
+          }
+          throw Exception("Öğe bulunamadı.");
+        }
+      } else {
+        throw Exception("İnternet bağlantısı yok.");
+      }
+    } catch (e) {
+      print("Hata: $e");
+      throw Exception("Bitki silinirken bir hata oluştu.");
+    }
+  }
 }
