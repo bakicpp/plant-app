@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
@@ -99,7 +100,7 @@ class _HomepageState extends State<Homepage> {
         } else if (state is PlantErrorState) {
           return Center(child: Text(state.errorMessage));
         } else if (state is PlantListState) {
-          return pageView(state, pageWidth);
+          return pageView(state, pageWidth, pageHeight);
         } else if (state is PlantDeletedState) {
           return const Center(child: Text("Plant deleted"));
         } else if (state is PlantErrorState) {
@@ -110,35 +111,68 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Padding pageView(PlantListState state, double pageWidth) {
+  Padding pageView(PlantListState state, double pageWidth, double pageheight) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+      ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (state is PlantLoadingState)
-              const Center(child: CircularProgressIndicator())
-            else
-              const Center(child: Text("add plant")),
-            textField(controller: _nameController, labelText: "name"),
-            textField(controller: _colorController, labelText: "color"),
-            ElevatedButton(
-                onPressed: addPlant, child: const Text("add plant image")),
-            ElevatedButton(
-                onPressed: () async {
-                  await clearPlantsBox();
-                },
-                child: Text("clear hive")),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: plantListView(state, pageWidth),
-            )
-          ],
-        ),
+        child: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: pageheight / 15),
+              if (state is PlantLoadingState)
+                const Center(child: CircularProgressIndicator())
+              else
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: pageWidth / 22),
+                  child: headerContainer(pageWidth),
+                ),
+              textField(controller: _nameController, labelText: "name"),
+              textField(controller: _colorController, labelText: "color"),
+              ElevatedButton(
+                  onPressed: addPlant, child: const Text("add plant image")),
+              ElevatedButton(
+                  onPressed: () async {
+                    await clearPlantsBox();
+                  },
+                  child: Text("clear hive")),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: plantListView(state, pageWidth),
+              )
+            ],
+          ),
+          Positioned(
+              bottom: pageheight * 1.383,
+              child: Image.asset("assets/images/plant.png", scale: 2.3)),
+        ]),
       ),
     );
+  }
+
+  Container headerContainer(double pageWidth) {
+    return Container(
+        width: pageWidth,
+        height: pageWidth / 2.4,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(198, 215, 198, 1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(width: pageWidth / 3),
+            Text(
+              "Make plants\ngreat again!",
+              softWrap: true,
+              style: GoogleFonts.manrope(
+                  fontSize: 32, fontWeight: FontWeight.w800),
+            ),
+          ],
+        ));
   }
 
   SizedBox plantListView(PlantListState state, double pageWidth) {
