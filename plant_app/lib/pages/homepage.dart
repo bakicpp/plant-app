@@ -81,6 +81,9 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageHeight = MediaQuery.of(context).size.height;
+    double pageWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Plant App"),
@@ -96,7 +99,7 @@ class _HomepageState extends State<Homepage> {
         } else if (state is PlantErrorState) {
           return Center(child: Text(state.errorMessage));
         } else if (state is PlantListState) {
-          return pageView(state);
+          return pageView(state, pageWidth);
         } else if (state is PlantDeletedState) {
           return const Center(child: Text("Plant deleted"));
         } else if (state is PlantErrorState) {
@@ -107,7 +110,7 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Padding pageView(PlantListState state) {
+  Padding pageView(PlantListState state, double pageWidth) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: SingleChildScrollView(
@@ -128,21 +131,32 @@ class _HomepageState extends State<Homepage> {
                   await clearPlantsBox();
                 },
                 child: Text("clear hive")),
-            plantListView(state)
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: plantListView(state, pageWidth),
+            )
           ],
         ),
       ),
     );
   }
 
-  SizedBox plantListView(PlantListState state) {
+  SizedBox plantListView(PlantListState state, double pageWidth) {
     return SizedBox(
-      height: 300,
-      child: ListView.builder(
+      height: MediaQuery.of(context).size.height * state.plants.length / 4,
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisSpacing: 16,
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            childAspectRatio: 0.7),
         itemCount: state.plants.length,
         itemBuilder: (context, index) {
           final plant = state.plants[index];
-          return ListTile(
+          return plantContent(plant, pageWidth);
+
+          /*ListTile(
             title: Text(plant.name),
             subtitle: Text(plant.color),
             trailing: IconButton(
@@ -152,8 +166,102 @@ class _HomepageState extends State<Homepage> {
               icon: const Icon(Icons.delete),
             ),
             leading: CircleAvatar(child: Image.network(plant.imageURL)),
-          );
+          );*/
         },
+      ),
+    );
+  }
+
+  Expanded plantContent(Plant plant, double pageWidth) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 6.0,
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Stack(children: [
+                  Container(
+                    height: 130,
+                    width: 160,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: NetworkImage(plant.imageURL, scale: 2),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  deleteButtonPopUp(pageWidth, plant),
+                ]),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                plant.name,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                plant.color,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned deleteButtonPopUp(double pageWidth, Plant plant) {
+    return Positioned(
+      left: pageWidth / 3,
+      top: pageWidth / 40,
+      child: PopupMenuButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: Colors.white,
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            onTap: () {
+              context.read<PlantBloc>().add(DeletePlantEvent(plant));
+              Navigator.pop(context);
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                Text("Delete", style: TextStyle(color: Colors.red)),
+              ],
+            ),
+          ),
+        ],
+        child: const Icon(
+          Icons.more_vert,
+          color: Colors.white,
+        ),
       ),
     );
   }
