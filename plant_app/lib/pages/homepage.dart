@@ -11,6 +11,7 @@ import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/bloc/theme_bloc.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
+import 'package:plant_app/state_screens/plant_added_screen.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -54,6 +55,11 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _image = image;
     });
+    if (_image != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Image selected')),
+      );
+    }
   }
 
   void addPlant() async {
@@ -210,7 +216,7 @@ class _HomepageState extends State<Homepage> {
       ),
       body: BlocBuilder<PlantBloc, PlantState>(builder: (context, state) {
         if (state is PlantAddedState) {
-          return const Center(child: Text("Plant added"));
+          return const PlantAddedScreen();
         } else if (state is PlantErrorState) {
           return Center(child: Text(state.errorMessage));
         } else if (state is PlantListState) {
@@ -284,7 +290,7 @@ class _HomepageState extends State<Homepage> {
 
   SizedBox plantListView(PlantListState state, double pageWidth) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * state.plants.length / 4,
+      height: MediaQuery.of(context).size.height * state.plants.length / 5.3,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -400,9 +406,22 @@ class _HomepageState extends State<Homepage> {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: labelText,
-      ),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: Colors.blue, width: 2.0),
+            gapPadding: 3.0,
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: Colors.black12, width: 2.0),
+            gapPadding: 3.0,
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: Colors.green, width: 2.0),
+            gapPadding: 3.0,
+          ),
+          labelText: labelText),
     );
   }
 }
