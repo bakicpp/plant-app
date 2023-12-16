@@ -192,17 +192,17 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    Map isSelected = {
-      Language.turkish.text: AppLocalizations.of(context)!.localeName == 'tr',
-      Language.english.text: AppLocalizations.of(context)!.localeName == 'en',
+    Map<String, bool> isSelected = {
+      Language.turkish.text: false,
+      Language.english.text: false,
     };
 
     void toggleLanguage(String lang) {
-      if (isSelected[lang]) return;
+      if (isSelected[lang] == true) return;
 
-      isSelected.forEach((key, value) {
-        setState(() {
-          isSelected[key] = !value;
+      setState(() {
+        isSelected.forEach((key, value) {
+          isSelected[key] = key == lang;
         });
       });
 
@@ -218,6 +218,45 @@ class _HomepageState extends State<Homepage> {
     double pageWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text(
+                'Plant App',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+                leading: const Icon(Icons.brightness_2),
+                title: const Text('Change Theme'),
+                onTap: changeTheme),
+            ListTile(
+                leading: const Icon(Icons.language),
+                title: const Text('Turkish'),
+                onTap: () {
+                  toggleLanguage("Turkish");
+                }),
+            ListTile(
+                leading: const Icon(Icons.language),
+                title: const Text('English'),
+                onTap: () {
+                  toggleLanguage("English");
+                }),
+            ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Sign Out'),
+                onTap: signOut),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showBottomSheet(context, pageWidth);
