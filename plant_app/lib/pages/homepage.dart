@@ -162,11 +162,7 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       appBar: AppBar(
-        title: BlocBuilder<LanguageBloc, LanguageState>(
-          builder: (context, state) {
-            return Text(AppLocalizations.of(context)!.hello);
-          },
-        ),
+        title: Text("Plant App"),
       ),
       body: RefreshIndicator(
         color: Colors.green,
@@ -213,7 +209,7 @@ class _HomepageState extends State<Homepage> {
           ),
           ListTile(
               leading: const Icon(Icons.brightness_2),
-              title: const Text('Change Theme'),
+              title: Text(AppLocalizations.of(context)!.change_theme),
               onTap: changeTheme),
           ListTile(
               leading: const Icon(Icons.language),
@@ -229,7 +225,7 @@ class _HomepageState extends State<Homepage> {
               }),
           ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Sign Out'),
+              title: Text(AppLocalizations.of(context)!.sign_out),
               onTap: signOut),
         ],
       ),
@@ -286,7 +282,8 @@ class _HomepageState extends State<Homepage> {
               scale: 1,
             ),
             Text(
-              "Make plants\ngreat again!",
+              AppLocalizations.of(context)!.make_plants_happy,
+              maxLines: 1,
               softWrap: true,
               style: GoogleFonts.manrope(
                   fontSize: 32, fontWeight: FontWeight.w800),
@@ -297,7 +294,7 @@ class _HomepageState extends State<Homepage> {
 
   SizedBox plantListView(PlantListState state, double pageWidth) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * state.plants.length / 5.3,
+      height: MediaQuery.of(context).size.height * state.plants.length / 3,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

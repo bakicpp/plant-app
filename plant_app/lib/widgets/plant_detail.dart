@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlantDetail extends StatelessWidget {
   final String plantName;
@@ -23,7 +24,7 @@ class PlantDetail extends StatelessWidget {
           children: [
             // Bottom Sheet içeriği buraya eklenebilir
             Text(
-              'Plant Detail',
+              AppLocalizations.of(context)!.plant_details,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
@@ -34,12 +35,12 @@ class PlantDetail extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              'Plant Name: $plantName',
+              AppLocalizations.of(context)!.plant_type + ": " + plantName,
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 16),
             Text(
-              'Plant Color: $plantColor',
+              AppLocalizations.of(context)!.plant_color + ": " + plantColor,
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 16),

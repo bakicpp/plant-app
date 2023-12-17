@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class AddPlantBottomSheet extends StatelessWidget {
@@ -31,21 +32,27 @@ class AddPlantBottomSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 20.0),
-              Text('Add a plant 🌿',
+              Text(AppLocalizations.of(context)!.add_plant_title + ' 🌿',
                   style: GoogleFonts.manrope(
                       fontSize: 24, fontWeight: FontWeight.bold)),
               SizedBox(height: 20.0),
-              Text("Plant name",
+              Text(AppLocalizations.of(context)!.plant_type,
                   style: GoogleFonts.manrope(
                       fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 16.0),
-              textField(controller: nameController, labelText: "Ex: Rose"),
+              textField(
+                  controller: nameController,
+                  labelText:
+                      AppLocalizations.of(context)!.plant_type_placeholder),
               SizedBox(height: 20.0),
-              Text("Plant color",
+              Text(AppLocalizations.of(context)!.plant_color,
                   style: GoogleFonts.manrope(
                       fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(height: 16.0),
-              textField(controller: colorController, labelText: "Ex: Red"),
+              textField(
+                  controller: colorController,
+                  labelText:
+                      AppLocalizations.of(context)!.plant_color_placeholder),
               SizedBox(height: 16.0),
               selectImageSection(context),
               SizedBox(height: 16.0),
@@ -66,7 +73,7 @@ class AddPlantBottomSheet extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Add Plant',
+                    AppLocalizations.of(context)!.add_plant,
                     style: GoogleFonts.manrope(
                         color: Colors.white,
                         fontSize: 18,
@@ -102,7 +109,7 @@ class AddPlantBottomSheet extends StatelessWidget {
           children: [
             Icon(Icons.camera_alt_outlined, color: Colors.green),
             Text(
-              "Select image from files",
+              AppLocalizations.of(context)!.select_image,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: Colors.green,

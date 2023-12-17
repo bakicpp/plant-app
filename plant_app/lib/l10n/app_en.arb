@@ -1,4 +1,27 @@
 {
-	"exampleText" : "Welcome",
-    "hello" : "Hello"
+    "hello" : "Hello",
+    "welcome" : "Welcome",
+    "email": "Email",
+    "password": "Password",
+    "sign_in": "Sign in",
+    "enter_email": "Enter your email",
+    "enter_password": "Enter your password",
+    "dont_have_account": "Don't have an account?",
+    "sign_up": "Sign up",
+    "sign_up_title": "Sign Up",
+    "do_you_have_an_account": "Do you have an account?",
+    "sign_in": "Sign in",
+    "make_plants_happy": "Make your plants happy",
+    "add_plant": "Add Plant",
+    "add_plant_title": "Add a plant",
+    "plant_type": "Plant type",
+    "plant_type_placeholder": "Enter plant type",
+    "plant_color": "Plant color",
+    "plant_color_placeholder": "Enter plant color",
+    "select_image": "Select image from gallery",
+    "change_theme": "Change Theme",
+    "change_language": "Change Language",
+    "sign_out": "Sign Out",
+    "plant_details": "Plant Details"
+
 }

@@ -1,4 +1,27 @@
 {
-	"exampleText" : "ornek metin",
-    "hello" : "merhaba"
+	"hello" : "Merhaba",
+    "welcome" : "Hoşgeldiniz",
+    "email": "E-posta",
+    "password": "Şifre",
+    "sign_in": "Giriş yap",
+    "enter_email": "E-posta adresinizi giriniz",
+    "enter_password": "Şifrenizi giriniz",
+    "dont_have_account": "Hesabınız yok mu?",
+    "sign_up": "Kayıt ol",
+    "sign_up_title": "Kayıt Ol",
+    "do_you_have_an_account": "Hesabınız var mı?",
+    "sign_in": "Giriş yap",
+    "make_plants_happy": "Bitkilerinizi mutlu edin",
+    "add_plant": "Bitki Ekle",
+    "add_plant_title": "Bitki ekle",
+    "plant_type": "Bitki türü",
+    "plant_type_placeholder": "Bitki türünü giriniz",
+    "plant_color": "Bitki rengi",
+    "plant_color_placeholder": "Bitki rengini giriniz",
+    "select_image": "Resim seç",
+    "change_theme": "Temayı değiştir",
+    "change_language": "Dili değiştir",
+    "sign_out": "Çıkış yap",
+    "plant_details": "Bitki Detayları"
+
 }
