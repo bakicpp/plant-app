@@ -6,7 +6,6 @@ class PlantAddedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 10), () {
-      // Ekranın 2 saniye boyunca görünmesini sağlar
       Navigator.of(context).pop(); // Ekranı kapat
     });
 
@@ -31,7 +30,6 @@ class PlantAddedScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Ekranı kapatarak ana sayfaya dön
                 Navigator.of(context).pop();
               },
               child: const Text("Back to Home"),

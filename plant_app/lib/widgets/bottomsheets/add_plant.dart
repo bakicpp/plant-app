@@ -7,6 +7,7 @@ class AddPlantBottomSheet extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController colorController = TextEditingController();
   final double pageWidth;
+  final double pageHeight;
   final Function addPlant;
   final Function selectImage;
   final Function textField;
@@ -19,6 +20,7 @@ class AddPlantBottomSheet extends StatelessWidget {
     required this.nameController,
     required this.colorController,
     required this.selectImage,
+    required this.pageHeight,
   });
 
   @override
@@ -31,31 +33,31 @@ class AddPlantBottomSheet extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20.0),
+              SizedBox(height: pageHeight / 40),
               Text(AppLocalizations.of(context)!.add_plant_title + ' 🌿',
                   style: GoogleFonts.manrope(
                       fontSize: 24, fontWeight: FontWeight.bold)),
-              SizedBox(height: 20.0),
+              SizedBox(height: pageHeight / 36),
               Text(AppLocalizations.of(context)!.plant_type,
                   style: GoogleFonts.manrope(
                       fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 16.0),
+              SizedBox(height: pageHeight / 40),
               textField(
                   controller: nameController,
                   labelText:
                       AppLocalizations.of(context)!.plant_type_placeholder),
-              SizedBox(height: 20.0),
+              SizedBox(height: pageHeight / 36),
               Text(AppLocalizations.of(context)!.plant_color,
                   style: GoogleFonts.manrope(
                       fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 16.0),
+              SizedBox(height: pageHeight / 40),
               textField(
                   controller: colorController,
                   labelText:
                       AppLocalizations.of(context)!.plant_color_placeholder),
-              SizedBox(height: 16.0),
+              SizedBox(height: pageHeight / 40),
               selectImageSection(context),
-              SizedBox(height: 16.0),
+              SizedBox(height: pageHeight / 40),
               SizedBox(
                 width: pageWidth,
                 height: pageWidth / 8,

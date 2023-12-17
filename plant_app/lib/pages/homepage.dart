@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,9 +67,20 @@ class _HomepageState extends State<Homepage> {
       _image = image;
     });
     // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Image selected')),
-    );
+
+    // ignore: use_build_context_synchronously
+    CherryToast(
+            title: Text("Image selected successfully"),
+            icon: Icons.done_outline_sharp,
+            themeColor: Colors.green,
+            width: MediaQuery.of(context).size.width,
+            displayTitle: false,
+            description: Text("Image selected successfully"),
+            toastPosition: Position.top,
+            animationType: AnimationType.fromTop,
+            animationDuration: const Duration(milliseconds: 1000),
+            autoDismiss: true)
+        .show(context);
   }
 
   void addPlant() async {
@@ -114,6 +127,7 @@ class _HomepageState extends State<Homepage> {
       context: context,
       builder: (BuildContext context) {
         return AddPlantBottomSheet(
+            pageHeight: MediaQuery.of(context).size.height,
             pageWidth: pageWidth,
             addPlant: addPlant,
             textField: textField,
@@ -152,7 +166,7 @@ class _HomepageState extends State<Homepage> {
     double pageWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      drawer: drawer(toggleLanguage),
+      drawer: drawer(toggleLanguage, pageHeight),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showBottomSheet(context, pageWidth);
@@ -167,7 +181,7 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       appBar: AppBar(
-        title: Text("Plant App"),
+        title: const Text("Plant App"),
       ),
       body: RefreshIndicator(
         color: Colors.green,
@@ -195,21 +209,21 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Drawer drawer(void toggleLanguage(String lang)) {
+  Drawer drawer(void toggleLanguage(String lang), double pageHeight) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.green,
             ),
             child: Text(
               'Plant App',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+              style: GoogleFonts.manrope(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
           ListTile(
@@ -220,7 +234,7 @@ class _HomepageState extends State<Homepage> {
               leading: const Icon(Icons.logout),
               title: Text(AppLocalizations.of(context)!.sign_out),
               onTap: signOut),
-          SizedBox(height: 20),
+          SizedBox(height: pageHeight / 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [trButton(toggleLanguage), enButton(toggleLanguage)],
@@ -282,8 +296,8 @@ class _HomepageState extends State<Homepage> {
 
   Padding pageView(PlantListState state, double pageWidth, double pageheight) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
+      padding: EdgeInsets.symmetric(
+        vertical: pageheight / 40,
       ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -305,7 +319,7 @@ class _HomepageState extends State<Homepage> {
                       child: Text("clear hive")),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: plantListView(state, pageWidth),
+                    child: plantListView(state, pageWidth, pageheight),
                   )
                 ],
               )
@@ -339,6 +353,7 @@ class _HomepageState extends State<Homepage> {
                       Text(
                         AppLocalizations.of(context)!.make_plants_great_again,
                         style: GoogleFonts.manrope(
+                          color: Theme.of(context).cardColor,
                           fontSize: 32,
                           fontWeight: FontWeight.w800,
                         ),
@@ -352,16 +367,21 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  SizedBox plantListView(PlantListState state, double pageWidth) {
+  SizedBox plantListView(
+      PlantListState state, double pageWidth, double pageHeight) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * state.plants.length / 3,
+      height: state.plants.length == 1
+          ? state.plants.length * (pageHeight / 3)
+          : state.plants.length % 2 == 0
+              ? state.plants.length * (pageHeight / 3.5)
+              : state.plants.length * (pageHeight / 3.5) - pageHeight / 5,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             mainAxisSpacing: 16,
             crossAxisCount: 2,
             crossAxisSpacing: 12,
-            childAspectRatio: 0.7),
+            childAspectRatio: pageHeight / pageWidth / 2.6),
         itemCount: state.plants.length,
         itemBuilder: (context, index) {
           final plant = state.plants[index];
@@ -382,22 +402,24 @@ class _HomepageState extends State<Homepage> {
                     return PlantDetail(
                         plantName: plant.name,
                         plantColor: plant.color,
-                        plantImageURL: plant.imageURL);
+                        plantImageURL: plant.imageURL,
+                        pageHeight: pageHeight,
+                        pageWidth: pageWidth);
                   },
                 );
               },
-              child: plantContent(plant, pageWidth));
+              child: plantContent(plant, pageWidth, pageHeight));
         },
       ),
     );
   }
 
-  Expanded plantContent(Plant plant, double pageWidth) {
+  Expanded plantContent(Plant plant, double pageWidth, double pageHeight) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,
@@ -427,22 +449,21 @@ class _HomepageState extends State<Homepage> {
                   deleteButtonPopUp(pageWidth, plant),
                 ]),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: pageHeight / 50),
               Text(
                 plant.name,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodyText1!.color),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: pageHeight / 200),
               Text(
                 plant.color,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black54,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                 ),
               ),
             ],

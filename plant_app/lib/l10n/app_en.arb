@@ -22,6 +22,7 @@
     "change_language": "Change Language",
     "sign_out": "Sign Out",
     "plant_details": "Plant Details",
-    "make_plants_great_again": "Make plants great again"
+    "make_plants_great_again": "Make plants great again",
+    "image_selected": "Image selected successfully",
 
 }

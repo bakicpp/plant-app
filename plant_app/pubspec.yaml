@@ -49,6 +49,7 @@ dependencies:
   google_fonts: ^6.1.0
   equatable: ^2.0.5
   page_transition: ^2.1.0
+  cherry_toast: ^1.6.4
 
 dev_dependencies:
   flutter_test:

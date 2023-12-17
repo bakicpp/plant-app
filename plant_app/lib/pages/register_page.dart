@@ -9,6 +9,7 @@ import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_bloc
 import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_event.dart';
 import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_state.dart';
 import 'package:plant_app/pages/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -41,13 +42,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Sign Up",
+                  Text(AppLocalizations.of(context)!.sign_up_title,
                       style: GoogleFonts.manrope(
                           fontSize: 32, fontWeight: FontWeight.w700)),
                   SizedBox(height: 8),
                   Row(
                     children: [
-                      Text("Do you have an account?",
+                      Text(AppLocalizations.of(context)!.do_you_have_an_account,
                           style: GoogleFonts.manrope(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -57,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                   SizedBox(height: 36.0),
-                  Text("E-mail",
+                  Text(AppLocalizations.of(context)!.email,
                       style: GoogleFonts.manrope(
                           fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
@@ -65,10 +66,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 56,
                     child: registerTextFields(
                         controller: _emailController,
-                        hintText: 'Enter your email'),
+                        hintText: AppLocalizations.of(context)!.enter_email),
                   ),
                   const SizedBox(height: 16.0),
-                  Text("Password",
+                  Text(AppLocalizations.of(context)!.password,
                       style: GoogleFonts.manrope(
                           fontSize: 16, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
@@ -98,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 type: PageTransitionType.rightToLeftWithFade));
       },
-      child: Text("Sign In",
+      child: Text(AppLocalizations.of(context)!.sign_in,
           style: GoogleFonts.manrope(
               fontSize: 16, fontWeight: FontWeight.w500, color: Colors.green)),
     );
@@ -116,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
         context.read<AuthBloc>().add(
             AuthSignUpEvent(_emailController.text, _passwordController.text));
       },
-      child: Text('Sign up',
+      child: Text(AppLocalizations.of(context)!.sign_up,
           style: GoogleFonts.manrope(
               fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
     );
@@ -128,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
       builder: (context, state) {
         return registerTextFields(
             controller: _passwordController,
-            hintText: "Enter your password",
+            hintText: AppLocalizations.of(context)!.enter_password,
             obscureText: state is PasswordHiddenState,
             suffixIcon: IconButton(
               onPressed: () {

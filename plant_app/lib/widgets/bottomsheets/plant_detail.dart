@@ -6,12 +6,16 @@ class PlantDetail extends StatelessWidget {
   final String plantName;
   final String plantColor;
   final String plantImageURL;
+  final double pageWidth;
+  final double pageHeight;
 
   const PlantDetail({
     Key? key,
     required this.plantName,
     required this.plantColor,
     required this.plantImageURL,
+    required this.pageWidth,
+    required this.pageHeight,
   }) : super(key: key);
 
   @override
@@ -27,7 +31,7 @@ class PlantDetail extends StatelessWidget {
               AppLocalizations.of(context)!.plant_details,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: pageHeight / 40),
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.network(
@@ -37,15 +41,15 @@ class PlantDetail extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: pageHeight / 40),
             Text(AppLocalizations.of(context)!.plant_type + ": " + plantName,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
+            SizedBox(height: pageHeight / 40),
             Text(AppLocalizations.of(context)!.plant_color + ": " + plantColor,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
+            SizedBox(height: pageHeight / 40),
           ],
         ),
       ),

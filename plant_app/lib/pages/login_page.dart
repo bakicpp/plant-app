@@ -9,6 +9,7 @@ import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_bloc
 import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_event.dart';
 import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_state.dart';
 import 'package:plant_app/pages/register_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -60,21 +61,23 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Welcome",
+            Text(AppLocalizations.of(context)!.sign_in,
                 style: GoogleFonts.manrope(
                     fontSize: 30, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
-            Text("E-mail",
+            Text(AppLocalizations.of(context)!.email,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             SizedBox(
               height: 56,
               child: loginTextFields(
-                  controller: _emailController, hintText: 'Enter your email'),
+                controller: _emailController,
+                hintText: AppLocalizations.of(context)!.enter_email,
+              ),
             ),
             const SizedBox(height: 16.0),
-            Text("Password",
+            Text(AppLocalizations.of(context)!.password,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
@@ -88,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account?",
+                Text(AppLocalizations.of(context)!.dont_have_account,
                     style: GoogleFonts.manrope(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -115,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 type: PageTransitionType.leftToRightWithFade));
       },
-      child: Text("Sign Up",
+      child: Text(AppLocalizations.of(context)!.sign_up,
           style: GoogleFonts.manrope(
               fontSize: 16, fontWeight: FontWeight.w500, color: Colors.green)),
     );
@@ -127,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state) {
         return loginTextFields(
             controller: _passwordController,
-            hintText: 'Password',
+            hintText: AppLocalizations.of(context)!.enter_password,
             obscureText: state is PasswordHiddenState,
             suffixIcon: IconButton(
               icon: Icon(
@@ -156,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
         context.read<AuthBloc>().add(
             AuthSignInEvent(_emailController.text, _passwordController.text));
       },
-      child: Text('Login',
+      child: Text(AppLocalizations.of(context)!.sign_in,
           style: GoogleFonts.manrope(
               fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
     );
