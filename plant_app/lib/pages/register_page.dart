@@ -24,6 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<AuthBloc, AuthState>(
@@ -45,7 +47,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(AppLocalizations.of(context)!.sign_up_title,
                       style: GoogleFonts.manrope(
                           fontSize: 32, fontWeight: FontWeight.w700)),
-                  SizedBox(height: 8),
+                  SizedBox(
+                    height: pageHeight / 100,
+                  ),
                   Row(
                     children: [
                       Text(AppLocalizations.of(context)!.do_you_have_an_account,
@@ -57,11 +61,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       goLoginPage(context)
                     ],
                   ),
-                  SizedBox(height: 36.0),
+                  SizedBox(height: pageHeight / 20),
                   Text(AppLocalizations.of(context)!.email,
                       style: GoogleFonts.manrope(
                           fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
+                  SizedBox(
+                    height: pageHeight / 100,
+                  ),
                   SizedBox(
                     height: 56,
                     child: registerTextFields(
@@ -72,12 +78,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(AppLocalizations.of(context)!.password,
                       style: GoogleFonts.manrope(
                           fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  SizedBox(height: 56, child: passwordTextField()),
+                  SizedBox(
+                    height: pageHeight / 100,
+                  ),
+                  SizedBox(height: pageHeight / 14, child: passwordTextField()),
                   const SizedBox(height: 24.0),
                   SizedBox(
                       width: double.infinity,
-                      height: 56,
+                      height: pageHeight / 14,
                       child: registerButton(context)),
                   const SizedBox(height: 16.0),
                 ],

@@ -24,5 +24,10 @@
     "plant_details": "Plant Details",
     "make_plants_great_again": "Make plants great again",
     "image_selected": "Image selected successfully",
+    "fill_all_fields": "Please fill all fields",
+    "plant_added": "Plant added successfully",
+    "plant_deleted": "Plant deleted successfully",
+    "no_plants": "No plants added yet",
+    "no_plants_description": "Add a plant by clicking the button below"
 
 }

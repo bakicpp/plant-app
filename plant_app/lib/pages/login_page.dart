@@ -24,9 +24,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    double pageHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200.0),
+          preferredSize: const Size.fromHeight(200.0),
           child: AppBar(
               flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -47,12 +49,12 @@ class _LoginPageState extends State<LoginPage> {
             state.showErrorMessage(context);
           }
         },
-        child: pageView(context),
+        child: pageView(context, pageHeight),
       ),
     );
   }
 
-  Padding pageView(BuildContext context) {
+  Padding pageView(BuildContext context, double pageHeight) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -64,11 +66,15 @@ class _LoginPageState extends State<LoginPage> {
             Text(AppLocalizations.of(context)!.sign_in,
                 style: GoogleFonts.manrope(
                     fontSize: 30, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
+            SizedBox(
+              height: pageHeight / 50,
+            ),
             Text(AppLocalizations.of(context)!.email,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+            SizedBox(
+              height: pageHeight / 50,
+            ),
             SizedBox(
               height: 56,
               child: loginTextFields(
@@ -76,7 +82,9 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: AppLocalizations.of(context)!.enter_email,
               ),
             ),
-            const SizedBox(height: 16.0),
+            SizedBox(
+              height: pageHeight / 50,
+            ),
             Text(AppLocalizations.of(context)!.password,
                 style: GoogleFonts.manrope(
                     fontSize: 16, fontWeight: FontWeight.bold)),
@@ -87,7 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 56,
                 child: loginButton(context)),
-            const SizedBox(height: 16.0),
+            SizedBox(
+              height: pageHeight / 50,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -96,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     )),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 goRegisterPage(context)
               ],
             )

@@ -19,8 +19,10 @@ import 'package:plant_app/bloc/theme_bloc/theme_event.dart';
 import 'package:plant_app/language/model/language_model.dart';
 import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
+import 'package:plant_app/state_screens/no_plant_screen.dart';
 import 'package:plant_app/state_screens/plant_added_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:plant_app/state_screens/plant_deleted_screen.dart';
 import 'package:plant_app/widgets/bottomsheets/add_plant.dart';
 import 'package:plant_app/widgets/bottomsheets/plant_detail.dart';
 
@@ -70,12 +72,12 @@ class _HomepageState extends State<Homepage> {
 
     // ignore: use_build_context_synchronously
     CherryToast(
-            title: Text("Image selected successfully"),
+            title: Text(AppLocalizations.of(context)!.image_selected),
             icon: Icons.done_outline_sharp,
             themeColor: Colors.green,
             width: MediaQuery.of(context).size.width,
             displayTitle: false,
-            description: Text("Image selected successfully"),
+            description: Text(AppLocalizations.of(context)!.image_selected),
             toastPosition: Position.top,
             animationType: AnimationType.fromTop,
             animationDuration: const Duration(milliseconds: 1000),
@@ -88,9 +90,18 @@ class _HomepageState extends State<Homepage> {
     if (_nameController.text.isEmpty ||
         _colorController.text.isEmpty ||
         _image.path.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
-      );
+      CherryToast(
+              title: Text(AppLocalizations.of(context)!.fill_all_fields),
+              icon: Icons.warning_amber_outlined,
+              themeColor: Colors.red,
+              width: MediaQuery.of(context).size.width,
+              displayTitle: false,
+              description: Text(AppLocalizations.of(context)!.fill_all_fields),
+              toastPosition: Position.top,
+              animationType: AnimationType.fromTop,
+              animationDuration: const Duration(milliseconds: 1000),
+              autoDismiss: true)
+          .show(context);
       return;
     } else {
       context.read<PlantBloc>().add(
@@ -199,7 +210,7 @@ class _HomepageState extends State<Homepage> {
           } else if (state is PlantListState) {
             return pageView(state, pageWidth, pageHeight);
           } else if (state is PlantDeletedState) {
-            return const Center(child: Text("Plant deleted"));
+            return const PlantDeletedScreen();
           } else if (state is PlantErrorState) {
             return Center(child: Text(state.errorMessage));
           }
@@ -215,7 +226,7 @@ class _HomepageState extends State<Homepage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.green,
             ),
             child: Text(
@@ -261,7 +272,7 @@ class _HomepageState extends State<Homepage> {
           child: Container(
             width: 70,
             height: 30,
-            child: Center(
+            child: const Center(
                 child: Text("English", style: TextStyle(color: Colors.grey))),
           ),
         ),
@@ -286,7 +297,7 @@ class _HomepageState extends State<Homepage> {
           child: Container(
             width: 70,
             height: 30,
-            child: Center(
+            child: const Center(
                 child: Text("Türkçe", style: TextStyle(color: Colors.grey))),
           ),
         ),
@@ -316,14 +327,14 @@ class _HomepageState extends State<Homepage> {
                       onPressed: () async {
                         await clearPlantsBox();
                       },
-                      child: Text("clear hive")),
+                      child: const Text("clear hive")),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: plantListView(state, pageWidth, pageheight),
                   )
                 ],
               )
-            : const Center(child: Text("No plants added")),
+            : const NoPlantScreen(),
       ),
     );
   }
@@ -334,7 +345,7 @@ class _HomepageState extends State<Homepage> {
           width: pageWidth,
           height: pageWidth / 2.4,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(198, 215, 198, 1),
+            color: const Color.fromRGBO(198, 215, 198, 1),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Expanded(

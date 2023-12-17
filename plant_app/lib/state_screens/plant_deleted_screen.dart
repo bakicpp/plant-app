@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class PlantAddedScreen extends StatelessWidget {
-  const PlantAddedScreen({Key? key}) : super(key: key);
+class PlantDeletedScreen extends StatelessWidget {
+  const PlantDeletedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,13 @@ class PlantAddedScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              Icons.check_circle,
-              color: Colors.green,
+              Icons.delete,
+              color: Colors.red,
               size: 100,
             ),
             const SizedBox(height: 20),
             Text(
-              AppLocalizations.of(context)!.plant_added,
+              AppLocalizations.of(context)!.plant_deleted,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),

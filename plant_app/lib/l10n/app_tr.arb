@@ -23,6 +23,11 @@
     "sign_out": "Çıkış yap",
     "plant_details": "Bitki Detayları",
     "make_plants_great_again": "Bitkileri tekrar harika yapın",
-    "image_selected": "Resim seçildi"
+    "image_selected": "Resim seçildi",
+    "fill_all_fields": "Lütfen tüm alanları doldurunuz",
+    "plant_added": "Bitki başarıyla eklendi",
+    "plant_deleted": "Bitki başarıyla silindi",
+    "no_plants": "Henüz bitki eklenmedi",
+    "no_plants_description": "Bitki eklemek için aşağıdaki butonuna basınız"
 
 }
