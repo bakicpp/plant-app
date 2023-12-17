@@ -28,6 +28,7 @@
     "plant_added": "Plant added successfully",
     "plant_deleted": "Plant deleted successfully",
     "no_plants": "No plants added yet",
-    "no_plants_description": "Add a plant by clicking the button below"
+    "no_plants_description": "Add a plant by clicking the button below",
+    "delete": "Delete"
 
 }

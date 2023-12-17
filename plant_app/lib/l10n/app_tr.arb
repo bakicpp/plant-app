@@ -28,6 +28,7 @@
     "plant_added": "Bitki başarıyla eklendi",
     "plant_deleted": "Bitki başarıyla silindi",
     "no_plants": "Henüz bitki eklenmedi",
-    "no_plants_description": "Bitki eklemek için aşağıdaki butonuna basınız"
+    "no_plants_description": "Bitki eklemek için aşağıdaki butonuna basınız",
+    "delete": "Sil"
 
 }
