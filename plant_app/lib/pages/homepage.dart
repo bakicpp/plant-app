@@ -19,8 +19,8 @@ import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/pages/login_page.dart';
 import 'package:plant_app/state_screens/plant_added_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:plant_app/widgets/add_plant.dart';
-import 'package:plant_app/widgets/plant_detail.dart';
+import 'package:plant_app/widgets/bottomsheets/add_plant.dart';
+import 'package:plant_app/widgets/bottomsheets/plant_detail.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
