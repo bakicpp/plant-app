@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:plant_app/bloc/auth_bloc.dart';
-import 'package:plant_app/bloc/password_visibility_bloc.dart';
+import 'package:plant_app/bloc/auth_bloc/auth_bloc.dart';
+import 'package:plant_app/bloc/auth_bloc/auth_event.dart';
+import 'package:plant_app/bloc/auth_bloc/auth_state.dart';
+import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_bloc.dart';
+import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_event.dart';
+import 'package:plant_app/bloc/password_visibility_bloc/password_visibility_state.dart';
 import 'package:plant_app/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {

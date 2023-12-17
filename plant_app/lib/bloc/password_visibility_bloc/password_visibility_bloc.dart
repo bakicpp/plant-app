@@ -1,14 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-abstract class PasswordVisibilityEvent {}
-
-class TogglePasswordVisibilityEvent extends PasswordVisibilityEvent {}
-
-abstract class PasswordVisibilityState {}
-
-class PasswordVisibleState extends PasswordVisibilityState {}
-
-class PasswordHiddenState extends PasswordVisibilityState {}
+import 'password_visibility_event.dart';
+import 'password_visibility_state.dart';
 
 class PasswordVisibilityBloc
     extends Bloc<PasswordVisibilityEvent, PasswordVisibilityState> {

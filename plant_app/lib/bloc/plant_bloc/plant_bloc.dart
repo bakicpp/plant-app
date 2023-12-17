@@ -1,47 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plant_app/models/plant.dart';
 import 'package:plant_app/repository/plant_repository.dart';
-import 'dart:io';
-
-abstract class PlantState {}
-
-class PlantInitialState extends PlantState {}
-
-class PlantLoadingState extends PlantState {}
-
-class PlantAddedState extends PlantState {}
-
-class PlantListState extends PlantState {
-  final List<Plant> plants;
-
-  PlantListState(this.plants);
-}
-
-class PlantDeletedState extends PlantState {}
-
-class PlantErrorState extends PlantState {
-  final String errorMessage;
-
-  PlantErrorState(this.errorMessage);
-}
-
-abstract class PlantEvent {}
-
-class AddPlantEvent extends PlantEvent {
-  final String name;
-  final String color;
-  final File image;
-
-  AddPlantEvent(this.name, this.color, this.image);
-}
-
-class GetPlantsEvent extends PlantEvent {}
-
-class DeletePlantEvent extends PlantEvent {
-  final Plant plant;
-
-  DeletePlantEvent(this.plant);
-}
+import 'plant_event.dart';
+import 'plant_state.dart';
 
 class PlantBloc extends Bloc<PlantEvent, PlantState> {
   final PlantRepository _repository;
