@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/language_bloc/language_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
@@ -45,13 +46,13 @@ class _HomepageState extends State<Homepage> {
   void signOut() {
     context.read<AuthBloc>().add(AuthSignOutEvent());
     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => BlocProvider(
-                create: (context) => PasswordVisibilityBloc(),
-                child: const LoginPage(),
-              )),
-    );
+        context,
+        PageTransition(
+            child: BlocProvider(
+              create: (context) => PasswordVisibilityBloc(),
+              child: const LoginPage(),
+            ),
+            type: PageTransitionType.leftToRightWithFade));
   }
 
   Future<void> selectImage() async {
@@ -227,8 +228,63 @@ class _HomepageState extends State<Homepage> {
               leading: const Icon(Icons.logout),
               title: Text(AppLocalizations.of(context)!.sign_out),
               onTap: signOut),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [trButton(toggleLanguage), enButton(toggleLanguage)],
+          ),
         ],
       ),
+    );
+  }
+
+  Row enButton(void toggleLanguage(String lang)) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 20,
+          height: 20,
+          child: Image.asset(
+            "assets/images/flag_en.jpg",
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            toggleLanguage("English");
+          },
+          child: Container(
+            width: 70,
+            height: 30,
+            child: Center(
+                child: Text("English", style: TextStyle(color: Colors.grey))),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row trButton(void toggleLanguage(String lang)) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 20,
+          height: 20,
+          child: Image.asset(
+            "assets/images/flag_tr.png",
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            toggleLanguage("Turkish");
+          },
+          child: Container(
+            width: 70,
+            height: 30,
+            child: Center(
+                child: Text("Türkçe", style: TextStyle(color: Colors.grey))),
+          ),
+        ),
+      ],
     );
   }
 

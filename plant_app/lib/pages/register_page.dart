@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:plant_app/bloc/auth_bloc.dart';
 import 'package:plant_app/bloc/password_visibility_bloc.dart';
 import 'package:plant_app/pages/login_page.dart';
@@ -85,13 +86,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return GestureDetector(
       onTap: () {
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                    create: (context) => PasswordVisibilityBloc(),
-                    child: const LoginPage(),
-                  )),
-        );
+            context,
+            PageTransition(
+                child: BlocProvider(
+                  create: (context) => PasswordVisibilityBloc(),
+                  child: const LoginPage(),
+                ),
+                type: PageTransitionType.rightToLeftWithFade));
       },
       child: Text("Sign In",
           style: GoogleFonts.manrope(

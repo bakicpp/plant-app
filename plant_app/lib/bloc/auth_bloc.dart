@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:plant_app/bloc/plant_bloc.dart';
 import 'package:plant_app/pages/homepage.dart';
 import 'package:plant_app/repository/plant_repository.dart';
@@ -21,11 +22,13 @@ class AuthAuthenticatedState extends AuthState {
   void authSuccess(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-          builder: (context) => BlocProvider(
-                create: (context) => PlantBloc(PlantRepository()),
-                child: const Homepage(),
-              )),
+      PageTransition(
+        type: PageTransitionType.leftToRightWithFade,
+        child: BlocProvider(
+          create: (context) => PlantBloc(PlantRepository()),
+          child: const Homepage(),
+        ),
+      ),
     );
   }
 }
