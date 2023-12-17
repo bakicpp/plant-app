@@ -11,7 +11,6 @@
     "sign_up_title": "Sign Up",
     "do_you_have_an_account": "Do you have an account?",
     "sign_in": "Sign in",
-    "make_plants_happy": "Make your plants happy",
     "add_plant": "Add Plant",
     "add_plant_title": "Add a plant",
     "plant_type": "Plant type",
@@ -22,6 +21,7 @@
     "change_theme": "Change Theme",
     "change_language": "Change Language",
     "sign_out": "Sign Out",
-    "plant_details": "Plant Details"
+    "plant_details": "Plant Details",
+    "make_plants_great_again": "Make plants great again"
 
 }

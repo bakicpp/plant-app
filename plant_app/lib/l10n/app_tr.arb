@@ -11,7 +11,6 @@
     "sign_up_title": "Kayıt Ol",
     "do_you_have_an_account": "Hesabınız var mı?",
     "sign_in": "Giriş yap",
-    "make_plants_happy": "Bitkilerinizi mutlu edin",
     "add_plant": "Bitki Ekle",
     "add_plant_title": "Bitki ekle",
     "plant_type": "Bitki türü",
@@ -22,6 +21,7 @@
     "change_theme": "Temayı değiştir",
     "change_language": "Dili değiştir",
     "sign_out": "Çıkış yap",
-    "plant_details": "Bitki Detayları"
+    "plant_details": "Bitki Detayları",
+    "make_plants_great_again": "Bitkileri tekrar harika yapın"
 
 }

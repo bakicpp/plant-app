@@ -266,30 +266,42 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Container headerContainer(double pageWidth) {
-    return Container(
-        width: pageWidth,
-        height: pageWidth / 2.4,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(198, 215, 198, 1),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/plant.png",
-              scale: 1,
+  Flexible headerContainer(double pageWidth) {
+    return Flexible(
+      child: Container(
+          width: pageWidth,
+          height: pageWidth / 2.4,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(198, 215, 198, 1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/images/plant.png",
+                  scale: 1,
+                ),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.make_plants_great_again,
+                        style: GoogleFonts.manrope(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Text(
-              AppLocalizations.of(context)!.make_plants_happy,
-              maxLines: 1,
-              softWrap: true,
-              style: GoogleFonts.manrope(
-                  fontSize: 32, fontWeight: FontWeight.w800),
-            ),
-          ],
-        ));
+          )),
+    );
   }
 
   SizedBox plantListView(PlantListState state, double pageWidth) {
