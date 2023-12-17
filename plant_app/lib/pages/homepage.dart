@@ -213,18 +213,6 @@ class _HomepageState extends State<Homepage> {
               title: Text(AppLocalizations.of(context)!.change_theme),
               onTap: changeTheme),
           ListTile(
-              leading: const Icon(Icons.language),
-              title: const Text('Turkish'),
-              onTap: () {
-                toggleLanguage("Turkish");
-              }),
-          ListTile(
-              leading: const Icon(Icons.language),
-              title: const Text('English'),
-              onTap: () {
-                toggleLanguage("English");
-              }),
-          ListTile(
               leading: const Icon(Icons.logout),
               title: Text(AppLocalizations.of(context)!.sign_out),
               onTap: signOut),
