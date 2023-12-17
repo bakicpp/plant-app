@@ -67,8 +67,17 @@ class _HomepageState extends State<Homepage> {
 
   void addPlant() async {
     // ignore: use_build_context_synchronously
-    context.read<PlantBloc>().add(
-        AddPlantEvent(_nameController.text, _colorController.text, _image));
+    if (_nameController.text.isEmpty ||
+        _colorController.text.isEmpty ||
+        _image.path.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill all fields')),
+      );
+      return;
+    } else {
+      context.read<PlantBloc>().add(
+          AddPlantEvent(_nameController.text, _colorController.text, _image));
+    }
   }
 
   void changeTheme() {
@@ -234,27 +243,29 @@ class _HomepageState extends State<Homepage> {
       ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (state is PlantLoadingState)
-              const Center(child: CircularProgressIndicator())
-            else
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: pageWidth / 22),
-                child: headerContainer(pageWidth),
-              ),
-            ElevatedButton(
-                onPressed: () async {
-                  await clearPlantsBox();
-                },
-                child: Text("clear hive")),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: plantListView(state, pageWidth),
-            )
-          ],
-        ),
+        child: state.plants.isNotEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (state is PlantLoadingState)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: pageWidth / 22),
+                      child: headerContainer(pageWidth),
+                    ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        await clearPlantsBox();
+                      },
+                      child: Text("clear hive")),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: plantListView(state, pageWidth),
+                  )
+                ],
+              )
+            : const Center(child: Text("No plants added")),
       ),
     );
   }
