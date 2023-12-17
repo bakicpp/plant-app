@@ -44,4 +44,20 @@ Veri sağlama ve işleme görevleri, Repository Provider kullanılarak yönetili
 
 Uygulamanın dilini değiştirebilmek için localization (yerelleştirme) özelliği eklenmiştir.
 
+### Uygulama İçinden Görseller
+
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/94b60416-d27c-40f9-add6-b86ca3e8a02f" width="200" height="430">
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/f97b78cc-3e47-48d2-9f3a-e488bc033c3c" width="200" height="430">
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/050ff678-5a2b-4437-9ee5-381874917c0a" width="200" height="430">
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/c2831585-a1ab-473d-8f5c-15a96ae34a7f" width="200" height="430">
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/c2711844-3d84-4349-a94d-840683786b41" width="200" height="430">
+
+<img src="https://github.com/bakicpp/plant-app/assets/93713174/857f72ba-0e44-4adb-be27-e8b868910182" width="200" height="430">
+
+
 
