@@ -113,7 +113,7 @@ class _HomepageState extends State<Homepage> {
     context.read<ThemeBloc>().add(ToggleThemeEvent());
   }
 
-  Future<void> clearPlantsBox() async {
+  /*Future<void> clearPlantsBox() async {
     try {
       final box = await Hive.openBox<Plant>('plants');
       await box.clear(); // Bu satır kutu içindeki tüm öğeleri siler
@@ -122,7 +122,7 @@ class _HomepageState extends State<Homepage> {
       print("Hata: $e");
       throw Exception("Plants kutusu temizlenirken bir hata oluştu.");
     }
-  }
+  }*/
 
   void _showBottomSheet(BuildContext context, double pageWidth) {
     showModalBottomSheet(
@@ -323,13 +323,13 @@ class _HomepageState extends State<Homepage> {
                       padding: EdgeInsets.symmetric(horizontal: pageWidth / 22),
                       child: headerContainer(pageWidth),
                     ),
-                  ElevatedButton(
+                  /*ElevatedButton(
                       onPressed: () async {
                         await clearPlantsBox();
                       },
-                      child: const Text("clear hive")),
+                      child: const Text("clear hive")),*/
                   Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: plantListView(state, pageWidth, pageheight),
                   )
                 ],
